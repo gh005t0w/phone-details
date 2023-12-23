@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Price Search</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        hr {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+            cursor: pointer;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Phone Price List</h1>
+
+    <label for="phoneName">Phone Name:</label>
+    <input type="text" id="phoneName">
+
+    <label for="phonePrice">Phone Price:</label>
+    <input type="text" id="phonePrice">
+
+    <button onclick="addPhone()">Add Phone</button>
+
+    <hr>
+
+    <label for="search">Search Phone:</label>
+    <input type="text" id="search" oninput="searchPhones()">
+
+    <ul id="phoneList" onclick="showPrice(event)"></ul>
+
+    <script>
+        const phones = [];
+
+        function addPhone() {
+            const name = document.getElementById('phoneName').value;
+            const price = document.getElementById('phonePrice').value;
+
+            if (name && price) {
+                phones.push({ name, price });
+                displayPhones();
+                clearInputFields();
+            }
+        }
+
+        function displayPhones(filteredPhones = phones) {
+            const phoneList = document.getElementById('phoneList');
+            phoneList.innerHTML = '';
+
+            filteredPhones.forEach(phone => {
+                const listItem = document.createElement('li');
+                listItem.textContent = ${phone.name};
+                listItem.setAttribute('data-price', phone.price);
+                phoneList.appendChild(listItem);
+            });
+        }
+
+        function clearInputFields() {
+            document.getElementById('phoneName').value = '';
+            document.getElementById('phonePrice').value = '';
+        }
+
+        function searchPhones() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const filteredPhones = phones.filter(phone => phone.name.toLowerCase().includes(searchTerm));
+            displayPhones(filteredPhones);
+        }
+
+        function showPrice(event) {
+            if (event.target.tagName === 'LI') {
+                const phoneName = event.target.textContent;
+                const phonePrice = event.target.getAttribute('data-price');
+                alert(Price of ${phoneName}: $${phonePrice});
+            }
+        }
+    </script>
+
+</body>
+</html>
